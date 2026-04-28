@@ -1,0 +1,23 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Users: read by anyone authenticated, write only to own doc
+    match /users/{uid} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && request.auth.uid == uid;
+    }
+
+    // Games: read/write only by the game owner
+    match /games/{gameId} {
+      allow read, write: if request.auth != null && request.auth.uid == resource.data.uid;
+      allow create: if request.auth != null && request.auth.uid == request.resource.data.uid;
+    }
+
+    // Leaderboard: public read, no direct writes
+    match /leaderboard/{entry} {
+      allow read: if true;
+      allow write: if false;
+    }
+  }
+}
