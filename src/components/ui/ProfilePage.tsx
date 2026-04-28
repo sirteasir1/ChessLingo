@@ -187,7 +187,7 @@ const PIECE_NAMES: Record<string, string> = {
 function annotateMoves(moves: MoveRec[]): AnnotatedMove[] {
   return moves.map((m, i) => {
     const san = m.san ?? `${squareName(m.from)}-${squareName(m.to)}`;
-    const piece = PIECE_NAMES[m.piece?.[1]] ?? "Piece";
+    const piece = m.piece ? (PIECE_NAMES[m.piece[1]] ?? "Piece") : "Piece";
     const isWhite = i % 2 === 0;
 
     let explanation = "";
@@ -821,3 +821,4 @@ export default function ProfilePage() {
     </div>
   );
 }
+
