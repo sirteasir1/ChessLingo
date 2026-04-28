@@ -147,7 +147,7 @@ function detectKeyMoments(moves: MoveRec[]): KeyMoment[] {
     // Captures
     if (m.captured) {
       const capturedName = PIECE_NAMES[m.captured[1]] ?? m.captured[1];
-      const capturingName = PIECE_NAMES[m.piece?.[1]] ?? "Piece";
+      const capturingName = m.piece ? (PIECE_NAMES[m.piece[1]] ?? "Piece") : "Piece";
       moments.push({
         moveNum, san, isWhite,
         type: "capture",
