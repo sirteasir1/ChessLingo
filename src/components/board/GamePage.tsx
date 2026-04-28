@@ -315,7 +315,7 @@ return () => { clearTimeout(t1); clearTimeout(t2); };
         {/* Sidebar tabs */}
         {inGame && (
           <div className="flex border-b border-white/5 shrink-0">
-            {(["moves","multiplayer"] as const).concat(englishMode ? ["english" as const] : []).map(t => (
+            {(["moves","multiplayer",...(englishMode ? ["english"] : [])] as ("moves"|"multiplayer"|"english")[]).map(t => (
               <button key={t} onClick={() => setSidebarTab(t)}
                 className={`flex-1 py-2.5 text-xs font-semibold capitalize transition-colors
                   ${sidebarTab === t ? "text-text-primary border-b-2 border-accent-purple" : "text-text-muted hover:text-text-secondary"}`}>
