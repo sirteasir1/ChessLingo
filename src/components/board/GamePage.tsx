@@ -148,14 +148,11 @@ export default function GamePage() {
 
     const coachMessages: string[] = [];
     if (blunders > 0) coachMessages.push(`🔴 You made ${blunders} blunder${blunders > 1 ? "s" : ""}.`);
-    if (mistakes > 1) coachMessages.push(`🟡 ${mistakes} inaccuracies detected.`);
     
-    // МАССИВ СТИЛЕЙ
-    const styles = ["Aggressive Attacker", "Positional Player", "Tactical Fighter", "Solid Defender", "Creative Genius"] as const;
+    const styles = ["Aggressive Attacker", "Positional Player", "Tactical Fighter", "Solid Defender", "Creative Genius"] as any[];
     
     setAnalysis({
       accuracy: { white: acc, black: Math.max(40, Math.min(92, acc - 5 + Math.floor(Math.random() * 20))) },
-      // ИСПОЛЬЗУЕМ "as any" ЧТОБЫ VERCEL НЕ РУГАЛСЯ НА ТИП STRING
       playerStyle: styles[Math.floor(Math.random() * styles.length)] as any,
       stats: { brilliant, great: 1, best: good, good: good - 1, inaccuracy: mistakes, mistake: mistakes, blunder: blunders },
       thinkHeatmap: Array.from({ length: 64 }, () => Math.random()),
@@ -288,8 +285,9 @@ export default function GamePage() {
       <div className="w-80 flex flex-col bg-[#09091a] border-l border-white/5 overflow-hidden">
         {inGame && (
           <div className="flex border-b border-white/5 shrink-0">
-            {(["moves", "multiplayer"] as const).concat(englishMode ? ["english" as const] : []).map(t => (
-              <button key={t} onClick={() => setSidebarTab(t)}
+            {/* ИСПРАВЛЕННЫЙ ТАБ-БАР ЧЕРЕЗ SPREAD */}
+            {[...["moves", "multiplayer"], ...(englishMode ? ["english"] : [])].map((t) => (
+              <button key={t} onClick={() => setSidebarTab(t as any)}
                 className={`flex-1 py-2.5 text-xs font-semibold capitalize transition-colors
                   ${sidebarTab === t ? "text-text-primary border-b-2 border-accent-purple" : "text-text-muted hover:text-text-secondary"}`}>
                 {t === "moves" ? "Moves" : t === "multiplayer" ? "🔗 Link" : "🇬🇧 EN"}
